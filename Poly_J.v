@@ -211,23 +211,30 @@ Definition list123''' := [1, 2, 3].
 (** ここにあるいくつかの練習問題は、List_J.vにあったものと同じですが、多相性の練習になります。以下の定義を行い、証明を完成させなさい。 *)
 
 Fixpoint repeat (X : Type) (n : X) (count : nat) : list X :=
-  (* FILL IN HERE *) admit.
+  match count with
+  | O => nil
+  | (S count') => n :: repeat X n count'
+  end.
 
 Example test_repeat1:
   repeat bool true 2 = cons true (cons true nil).
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Theorem nil_app : forall X:Type, forall l:list X,
   app [] l = l.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
+  (* FILL IN HERE *) 
 
 Theorem rev_snoc : forall X : Type,
                      forall v : X,
                      forall s : list X,
   rev (snoc s v) = v :: (rev s).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. intros X v s. induction s as [| s'].
+Case "nil".
+    simpl.  reflexivity.
+  Case "non nil".
+    simpl.  rewrite IHs.  reflexivity.  Qed.
+
 
 Theorem snoc_with_append : forall X : Type,
                          forall l1 l2 : list X,
@@ -343,17 +350,21 @@ Proof. reflexivity.  Qed.
 (** 前の章に出てきた[hd_opt]関数の多相版を定義しなさい。。次の単体テストでの確認も忘れずに。 *)
 
 Definition hd_opt {X : Type} (l : list X)  : option X :=
-  (* FILL IN HERE *) admit.
+  match l with
+  | nil => None
+  | x :: _ => Some x
+  end.
 
 (** 再び、暗黙的に定義された引数を明示的に指定してみましょう。関数名の前に[@]をつければいいのでしたね。 *)
 
 Check @hd_opt.
 
-Example test_hd_opt1 :  hd_opt [1,2] = Some 1.
- (* FILL IN HERE *) Admitted.
+Example test_hd_opt1 :  hd_opt [1,2] = Some 1. 
+Proof. simpl. reflexivity. Qed. 
+
 Example test_hd_opt2 :   hd_opt  [[1],[2]]  = Some [1].
- (* FILL IN HERE *) Admitted.
-(** [] *)
+Proof. simpl. reflexivity. Qed. 
+
 
 
 (** * データとしての関数 *)
@@ -837,6 +848,8 @@ Proof.
     SCase "m = 0". simpl. intros contra. inversion contra.
     SCase "m = S m'". simpl. intros H.
       apply eq_remove_S. apply IHn'. apply H. Qed.
+
+(* ここまでやった2017/04/10 *)
 
 (** **** 練習問題: ★★ (beq_nat_eq_informal) *)
 (** [beq_nat_eq]の、非形式的な証明を示しなさい。 *)
