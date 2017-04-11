@@ -858,16 +858,20 @@ Proof.
 (** [] *)
 
 (** **** 練習問題: ★★★ (beq_nat_eq') *)
-(** [beq_nat_eq]は、[m]について帰納法をつかうことで証明することができました。しかし我々は、もう少し変数を導入する順序に注意を払うべきです。なぜなら、我々は一般に、十分な帰納法の仮定を得ているからです。このことを次に示します。次の証明を完成させなさい。この練習問題の効果を最大にするため、とりあえずは先にやった証明を見ないで取り組んでください。 *)
+(** [beq_nat_eq]は、[m]について帰納法をつかうことで証明することができました。しかし我々は、もう少し変数を導入する順序に注意を払うべきです。
+なぜなら、我々は一般に、十分な帰納法の仮定を得ているからです。このことを次に示します。次の証明を完成させなさい。この練習問題の効果を最大にするため、とりあえずは先にやった証明を見ないで取り組んでください。 *)
 
 Theorem beq_nat_eq' : forall m n,
   beq_nat n m = true -> n = m.
 Proof.
   intros m. induction m as [| m'].
+Case "m=0".
+  intros n. destruct n as [| n'].
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
-(** [inversion]のもう一つの側面を見てみましょう。以前にすでに証明済みのものですが、少し遠回りな書き方になっています。新しく追加された等号のせいで、少し等式に関する証明を追加する必要がありますし、これまでに出てきたタクティックを使う練習にもなります。 *)
+(** [inversion]のもう一つの側面を見てみましょう。以前にすでに証明済みのものですが、少し遠回りな書き方になっています。
+新しく追加された等号のせいで、少し等式に関する証明を追加する必要がありますし、これまでに出てきたタクティックを使う練習にもなります。 *)
 
 Theorem length_snoc' : forall (X : Type) (v : X)
                               (l : list X) (n : nat),
@@ -892,7 +896,10 @@ Proof.
 Theorem beq_nat_0_l : forall n,
   true = beq_nat 0 n -> 0 = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. destruct n as [| n'].
+  Case "n=0". reflexivity.
+  Case "n!=0". simpl. intros contra. inversion contra. Qed.
+  (* FILL IN HERE *)
 
 Theorem beq_nat_0_r : forall n,
   true = beq_nat n 0 -> 0 = n.
