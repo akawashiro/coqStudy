@@ -19,8 +19,8 @@ Require Export Tactics.
     command: *)
 
 Check 3 = 3.
-(* ===> Prop *)
 
+(* ===> Prop *)
 Check forall n m : nat, n + m = m + n.
 (* ===> Prop *)
 
@@ -389,7 +389,12 @@ Proof.
 Fact not_implies_our_not : forall (P:Prop),
   ~ P -> (forall (Q:Prop), P -> Q).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros.
+  unfold not in H.
+  apply H in H0.
+  apply ex_falso_quodlibet.
+  apply H0.
+  Qed.
 (** [] *)
 
 (** This is how we use [not] to state that [0] and [1] are different
@@ -567,11 +572,36 @@ Qed.
 Theorem iff_refl : forall P : Prop,
   P <-> P.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split.
+  intros.
+  apply H.
+  intros.
+  apply H.
 
 Theorem iff_trans : forall P Q R : Prop,
   (P <-> Q) -> (Q <-> R) -> (P <-> R).
 Proof.
+  intros P Q R.
+  intros H G.
+  split.
+  unfold iff in H.
+  unfold iff in G.
+  destruct H as [H1 H2].
+  destruct G as [G1 G2].
+  intros.
+  apply G1.
+  apply H1.
+  apply H.
+
+  
+  unfold iff in H.
+  unfold iff in G.
+  destruct H as [H1 H2].
+  destruct G as [G1 G2].
+  intros.
+  apply H2.
+  apply G2.
+  apply H.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
@@ -770,7 +800,7 @@ Proof.
   intros A B f l x.
   induction l as [|x' l' IHl'].
   - (* l = nil, contradiction *)
-    simpl. intros [].
+    simpl. intros. apply H.
   - (* l = x' :: l' *)
     simpl. intros [H | H].
     + rewrite H. left. reflexivity.
@@ -791,15 +821,39 @@ Lemma In_map_iff :
     In y (map f l) <->
     exists x, f x = y /\ In x l.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  split.
+  induction l as [| x' l'].
+  simpl.
+  intros H.
+  destruct H.
+
+  simpl.
+  intros H.
+  destruct H as [H1 | H2].
+  exists x'.
+  split.
+  apply H1.
+  - left. reflexivity.
+  - apply IHl' in H2. destruct H2 as [z Hz]. exists z. destruct Hz as [Hz1 Hz2]. split. apply Hz1. right. apply Hz2.
+  - intros H. destruct H as [z Hz]. destruct Hz as [Hz1 Hz2]. symmetry in Hz1. rewrite Hz1. apply In_map. apply Hz2. Qed.
 
 (** **** Exercise: 2 stars (in_app_iff)  *)
 Lemma in_app_iff : forall A l l' (a:A),
   In a (l++l') <-> In a l \/ In a l'.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  split.
+  induction l as [| x xl]. simpl. intros.
+- right.
+  apply H.
+- simpl.
+  intros.
+  destruct H as [H1 | H2]. left. left. apply H1.
+  apply IHxl in H2. destruct H2 as [H21 | H22]. left. right. apply H21. right. apply H22.
+- induction l as [| x xl]. simpl. intros H. destruct H as [H1 | H2]. destruct H1. apply H2.
+  simpl. intros H. destruct H as [[H1 | H2] | H3]. left. apply H1. right. apply IHxl. left. apply H2. right. apply IHxl. right. apply H3. Qed.
+
+
+
 
 (** **** Exercise: 3 stars (All)  *)
 (** Recall that functions returning propositions can be seen as
@@ -1252,9 +1306,27 @@ Proof.
     [beq_nat_true_iff] that is more convenient in certain
     situations (we'll see examples in later chapters). *)
 
+Check contrapositive.
+Check beq_nat_true_iff.
+Check beq_nat_true.
+
+(* Theorem beq_true_equal : forall x y : nat, *)
+(*     beq_nat x y = true -> x = y. *)
+(* Proof. *)
+
+(* Lemma beq_nat_false : forall x y, beq_nat x y = false -> x<>y. *)
+(* Proof. *)
+(*  induction x. destruct y. simpl. intro.  *)
+(* Qed. *)
+
 Theorem beq_nat_false_iff : forall x y : nat,
   beq_nat x y = false <-> x <> y.
 Proof.
+  intros x y. split. rewrite contrapositive.
+  intro.
+  unfold not.
+
+
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
@@ -1462,6 +1534,7 @@ Proof.
 
 Definition peirce := forall P Q: Prop,
   ((P->Q)->P)->P.
+
 
 Definition double_negation_elimination := forall P:Prop,
   ~~P -> P.
