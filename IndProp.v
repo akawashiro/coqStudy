@@ -71,6 +71,7 @@ Require Export Logic.
 Inductive ev : nat -> Prop :=
 | ev_0 : ev 0
 | ev_SS : forall n : nat, ev n -> ev (S (S n)).
+(* 公理の導入？ *)
 
 (** This definition is different in one crucial respect from
     previous uses of [Inductive]: its result is not a [Type], but
@@ -123,11 +124,19 @@ Qed.
 
 (** More generally, we can show that any number multiplied by 2 is even: *)
 
+Eval simpl in double 2.
+
 (** **** Exercise: 1 star (ev_double)  *)
 Theorem ev_double : forall n,
   ev (double n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n.
+  simpl.
+  apply ev_0.
+  simpl.
+  apply ev_SS.
+  apply IHn.
+  Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -271,11 +280,16 @@ Proof.
 Theorem SSSSev__even : forall n,
   ev (S (S (S (S n)))) -> ev n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n E.
+  inversion E as [| n' E'].
+  apply evSS_ev in E'.
+  apply E'.
+  Qed.
 
 Theorem even5_nonsense :
   ev 5 -> 2 + 2 = 9.
 Proof.
+  
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
@@ -402,6 +416,7 @@ Qed.
 (** **** Exercise: 2 stars (ev_sum)  *)
 Theorem ev_sum : forall n m, ev n -> ev m -> ev (n + m).
 Proof.
+  
   (* FILL IN HERE *) Admitted.
 (** [] *)
 

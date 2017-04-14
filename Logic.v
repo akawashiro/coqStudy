@@ -577,6 +577,7 @@ Proof.
   apply H.
   intros.
   apply H.
+  Qed.
 
 Theorem iff_trans : forall P Q R : Prop,
   (P <-> Q) -> (Q <-> R) -> (P <-> R).
@@ -1322,11 +1323,6 @@ Check beq_nat_true.
 Theorem beq_nat_false_iff : forall x y : nat,
   beq_nat x y = false <-> x <> y.
 Proof.
-  intros x y. split. rewrite contrapositive.
-  intro.
-  unfold not.
-
-
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
@@ -1533,7 +1529,7 @@ Proof.
     [excluded_middle]) are equivalent. *)
 
 Definition peirce := forall P Q: Prop,
-  ((P->Q)->P)->P.
+    ((P->Q)->P)->P.
 
 
 Definition double_negation_elimination := forall P:Prop,

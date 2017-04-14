@@ -180,7 +180,8 @@ Print ev_4'''.
 
 Theorem ev_8 : ev 8.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  Show Proof.
+  apply ev_SS.  apply ev_SS.  apply ev_SS.  apply ev_SS. apply ev_0. Qed.
 
 Definition ev_8' : ev 8 
   (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
@@ -227,6 +228,8 @@ Definition ev_plus4' : forall n, ev n -> ev (4 + n) :=
 Definition ev_plus4'' (n : nat) (H : ev n) : ev (4 + n) :=
   ev_SS (S (S n)) (ev_SS n H).
 
+(* この辺までやった *)
+
 Check ev_plus4''.
 (* ===> ev_plus4'' : forall n : nat, ev n -> ev (4 + n) *)
 
@@ -259,6 +262,7 @@ Definition ev_plus2 : Prop :=
 
 Definition ev_plus2' : Prop :=
   forall n, forall (_ : ev n), ev (n + 2).
+Check ev_plus2'.
 
 (** Or, equivalently, we can write it in more familiar notation: *)
 
