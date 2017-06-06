@@ -31,14 +31,6 @@ Require Import Coq.Arith.Arith.
 Require Import Coq.Lists.List.
 Import ListNotations.
 
-Require Import Maps.
-Require Import Smallstep.
-Require Import Stlc.
-Require Import LibTactics.
-
-
-(* ################################################################# *)
-(** * Basic Features of Proof Search *)
 
 (** The idea of proof search is to replace a sequence of tactics
     applying lemmas and assumptions with a call to a single tactic,

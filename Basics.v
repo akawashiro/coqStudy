@@ -81,7 +81,7 @@ Inductive day : Type :=
     can be read "[monday] is a [day], [tuesday] is a [day], etc."
 
     Having defined [day], we can write functions that operate on
-    days. *)
+    // days. *)
 
 
 Definition next_weekday (d:day) : day :=
@@ -98,7 +98,7 @@ Definition next_weekday (d:day) : day :=
 (** One thing to note is that the argument and return types of
     this function are explicitly declared.  Like most functional
     programming languages, Coq can often figure out these types for
-    itself when they are not given explicitly -- i.e., it can do _type
+   itself when they are not given explicitly -- i.e., it can do _type
     inference_ -- but we'll generally include them to make reading
     easier. *)
 
@@ -288,6 +288,7 @@ Example test_andb34:                 (andb3 true true false) = false.
 
 (* ================================================================= *)
 (** ** Function Types *)
+
 
 (** Every expression in Coq has a type, describing what sort of
     thing it computes. The [Check] command asks Coq to print the type

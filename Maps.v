@@ -183,8 +183,7 @@ Proof. reflexivity. Qed.
 (** First, the empty map returns its default element for all keys: *)
 
 Lemma t_apply_empty:  forall A x v, @t_empty A v x = v.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (t_update_eq)  *)

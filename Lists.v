@@ -18,6 +18,7 @@ Inductive natprod : Type :=
     two arguments of type [nat]." *)
 
 Check (pair 3 5).
+Check (pair 10 10).
 
 (** Here are two simple functions for extracting the first and
     second components of a pair.  The definitions also illustrate how
@@ -84,7 +85,7 @@ Theorem surjective_pairing_stuck : forall (p : natprod),
   p = (fst p, snd p).
 Proof.
   simpl. (* Doesn't reduce anything! *)
-Abort.
+  intros p. destruct p as [n m]. simpl. reflexivity. Qed.
 
 (** We have to expose the structure of [p] so that [simpl] can
     perform the pattern match in [fst] and [snd].  We can do this with
@@ -103,14 +104,14 @@ Proof.
 Theorem snd_fst_is_swap : forall (p : natprod),
   (snd p, fst p) = swap_pair p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros p.  destruct p as [n m].  simpl.  reflexivity.  Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, optional (fst_swap_is_snd)  *)
 Theorem fst_swap_is_snd : forall (p : natprod),
   fst (swap_pair p) = snd p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros p.  destruct p as [n m].  simpl.  reflexivity.  Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -201,6 +202,8 @@ Fixpoint length (l:natlist) : nat :=
 (* ----------------------------------------------------------------- *)
 (** *** Append *)
 
+Eval simpl in length mylist1.
+
 (** The [app] function concatenates (appends) two lists. *)
 
 Fixpoint app (l1 l2 : natlist) : natlist :=
@@ -259,34 +262,43 @@ Proof. reflexivity.  Qed.
     [countoddmembers] below. Have a look at the tests to understand
     what these functions should do. *)
 
-Fixpoint nonzeros (l:natlist) : natlist
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint nonzeros (l:natlist) : natlist :=
+    match l with
+    | [] => []
+    | h :: t => if beq_nat h O then nonzeros t else h :: (nonzeros t)
+    end.
 
 Example test_nonzeros:
   nonzeros [0;1;0;2;3;0;0] = [1;2;3].
-  (* FILL IN HERE *) Admitted.
+    simpl. reflexivity. Qed.
 
-Fixpoint oddmembers (l:natlist) : natlist
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint oddmembers (l:natlist) : natlist :=
+    match l with
+    | [] => []
+    | h :: t => if oddb h then h :: oddmembers t else oddmembers t
+    end.
 
 Example test_oddmembers:
   oddmembers [0;1;0;2;3;0;0] = [1;3].
-  (* FILL IN HERE *) Admitted.
+auto. Qed.
 
-Definition countoddmembers (l:natlist) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint countoddmembers (l:natlist) : nat :=
+    match l with
+    | [] => O
+    | h :: t => if oddb h then S (countoddmembers t) else countoddmembers t
+    end.
 
 Example test_countoddmembers1:
   countoddmembers [1;0;3;1;4;5] = 4.
-  (* FILL IN HERE *) Admitted.
+    auto. Qed.
 
 Example test_countoddmembers2:
   countoddmembers [0;2;4] = 0.
-  (* FILL IN HERE *) Admitted.
+    auto. Qed.
 
 Example test_countoddmembers3:
   countoddmembers nil = 0.
-  (* FILL IN HERE *) Admitted.
+    auto. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (alternate)  *)
