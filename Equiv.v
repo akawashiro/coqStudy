@@ -129,7 +129,15 @@ Theorem skip_right: forall c,
     (c ;; SKIP)
     c.
 Proof.
-  (* FILL IN HERE *) Admitted.
+   - intros c st st'.
+     split;intros H.
+     inversion H. subst.
+     inversion H5. subst.
+     assumption.
+     apply E_Seq with st'. 
+     assumption.
+     apply E_Skip.
+Qed.
 (** [] *)
 
 (** Similarly, here is a simple transformation that optimizes [IFB]
@@ -141,11 +149,11 @@ Theorem IFB_true_simple: forall c1 c2,
     c1.
 Proof.
   intros c1 c2.
-  split; intros H.
+  split. intros H.
   - (* -> *)
     inversion H; subst. assumption. inversion H5.
   - (* <- *)
-    apply E_IfTrue. reflexivity. assumption.  Qed.
+    apply E_IfTrue. reflexivity.   Qed.
 
 (** Of course, few programmers would be tempted to write a conditional
     whose guard is literally [BTrue].  A more interesting case is when
@@ -216,7 +224,20 @@ Theorem IFB_false: forall b c1 c2,
     (IFB b THEN c1 ELSE c2 FI)
     c2.
 Proof.
-  (* FILL IN HERE *) Admitted.
+    intros b c1 c2 Hb.
+    split; intros H.
+    inversion H. subst.
+    unfold bequiv in Hb.
+    simpl in Hb.
+    rewrite Hb in H5.
+    inversion H5.
+    assumption.
+    apply E_IfFalse.
+    unfold bequiv in Hb.
+    rewrite Hb.
+    simpl. reflexivity.
+    assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (swap_if_branches)  *)

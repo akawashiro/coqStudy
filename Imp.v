@@ -157,6 +157,9 @@ Fixpoint beval (b : bexp) : bool :=
   | BAnd b1 b2  => andb (beval b1) (beval b2)
   end.
 
+Eval simpl in (beval BTrue).
+Eval simpl in (beval (BNot BTrue)).
+
 (* ================================================================= *)
 (** ** Optimization *)
 
