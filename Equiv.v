@@ -346,7 +346,11 @@ Theorem WHILE_true: forall b c,
     (WHILE b DO c END)
     (WHILE BTrue DO SKIP END).
 Proof.
-  (* FILL IN HERE *) Admitted.
+    split.
+    - intro. apply (WHILE_true_nonterm b c st st') in H.
+      apply H in H0. destruct H0.
+    - remember BTrue. intro. apply (WHILE_true_nonterm b0 SKIP st st') in H0. destruct H0.
+     subst. unfold bequiv. simpl. reflexivity. Qed.
 (** [] *)
 
 (** A more interesting fact about [WHILE] commands is that any finite

@@ -1171,7 +1171,9 @@ Theorem andb_eq_orb :
   (andb b c = orb b c) ->
   b = c.
 Proof.
-  (* FILL IN HERE *) Admitted.
+    intros.
+    destruct b. destruct c. reflexivity. simpl in H. destruct H. reflexivity.
+    destruct c. simpl in H. destruct H. reflexivity. reflexivity.
 (** [] *)
 
 (** **** Exercise: 3 starsM (binary)  *)

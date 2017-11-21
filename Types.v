@@ -182,6 +182,7 @@ Hint Unfold stuck.
 Example some_term_is_stuck :
   exists t, stuck t.
 Proof.
+
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
